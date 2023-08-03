@@ -1,0 +1,36 @@
+common:
+  # mlir repo source path
+  mlir_base_path: '/mlir' 
+  mlir_opt: '/build/bin/mlir-opt'
+  # 存储 mlir-opt运行时所需要的临时文件
+  temp_dir: '/mytest/fuzz_tool/case/'
+
+database:
+  host: "10.15.1.202"
+  port: 23515
+  username: "root"
+  passwd: "root123"
+  db: "mlir"
+  #   host: "10.15.0.39"
+  # port: 22903
+  # username: "root"
+  # passwd: "root123"
+  # db: "mlir"
+  # 区分测试批次 默认生成带label的表  如: seed_pool_20230222
+  # !!注意: 若表已经存在 运行generator工具时会对表重建s
+  # label: "test_1"
+
+generator:
+  # 用于生成测试用例的空函数
+  empty_func_file: "/mytest/fuzz_tool/case/template/empty.mlir"
+  type: "o"
+  count: 500
+
+fuzz:
+  analysis_seed_file: "/test/temp.json"
+  run_time: 2000
+  Nmax: 1
+  mutate_flag: "mutate"
+  flag_mutate: 1 
+  flag_VPA: 0
+  diff_threshold: 0.1
