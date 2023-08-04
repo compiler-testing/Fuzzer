@@ -1,0 +1,11 @@
+{
+   "DialectNum" : 3,
+   "LowerPass" : [
+      "-convert-cf-to-llvm",
+      "-convert-cf-to-spirv",
+      "-pass-pipeline=\"builtin.module(func.func(tosa-to-linalg-named))\"",
+      "-pass-pipeline=\"builtin.module(func.func(tosa-to-linalg-named,tosa-to-linalg))\""
+   ],
+   "LowerPassNum" : 4,
+   "dialect" : [ "tosa", "cf", "func" ]
+}

@@ -1,0 +1,2628 @@
+{
+  "fully_connected": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_ConvOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          2
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          2
+        ],
+        "NAME": "weight",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1
+        ],
+        "NAME": "bias",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "fully_connected",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          2
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "rfft2d": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "rfft2d",
+    "OUT_NUM": 2,
+    "RESULT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "output_real",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "output_imag",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "select": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input3",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "select",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "logical_left_shift": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "logical_left_shift",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "bitwise_not": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "bitwise_not",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "reduce_max": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reduce_max",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "bitwise_and": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "bitwise_and",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "bitwise_xor": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "bitwise_xor",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "greater_equal": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "floatOruint"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "floatOruint"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "greater_equal",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "div": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "Int32"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "Int32"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "div",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "Int32"
+      }
+    ]
+  },
+  "cast": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "cast",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "pad": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_PadOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "padding",
+        "TYPE": "Int32Or64"
+      },
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "pad_const",
+        "TYPE": "Optional<Tosa_ScalarTensor>"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "pad",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "slice": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          100
+        ],
+        "NAME": "start",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          100
+        ],
+        "NAME": "size",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 2,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "slice",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "rescale": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "input_zp",
+        "TYPE": "I32"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "output_zp",
+        "TYPE": "I32"
+      },
+      {
+        "ArrayCount": [
+          100
+        ],
+        "NAME": "multiplier",
+        "TYPE": "I32"
+      },
+      {
+        "ArrayCount": [
+          100
+        ],
+        "NAME": "shift",
+        "TYPE": "I32"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "scale32",
+        "TYPE": "Bool"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "double_round",
+        "TYPE": "Bool"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "per_channel",
+        "TYPE": "Bool"
+      }
+    ],
+    "ATTR_NUM": 7,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "rescale",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "tile": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          100
+        ],
+        "NAME": "multiples",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "tile",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "conv2d": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          4
+        ],
+        "NAME": "pad",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "stride",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "dilation",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_ConvOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 4,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "weight",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1
+        ],
+        "NAME": "bias",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "conv2d",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "exp": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "exp",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "greater": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "floatOruint"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "greater",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "reduce_any": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reduce_any",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "clamp": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "min_int",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "max_int",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "min_fp",
+        "TYPE": "F32"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "max_fp",
+        "TYPE": "F32"
+      }
+    ],
+    "ATTR_NUM": 4,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "clamp",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "add": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "add",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "ceil": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "ceil",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "concat": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input2",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "concat",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "reshape": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          100
+        ],
+        "NAME": "new_shape",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reshape",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "gather": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "values",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          2
+        ],
+        "NAME": "indices",
+        "TYPE": "i32"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "gather",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "depthwise_conv2d": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          4
+        ],
+        "NAME": "pad",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "stride",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "dilation",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_ConvOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 4,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "weight",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1
+        ],
+        "NAME": "bias",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "depthwise_conv2d",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "clz": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "clz",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "int"
+      }
+    ]
+  },
+  "argmax": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "argmax",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "i32"
+      }
+    ]
+  },
+  "logical_right_shift": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "logical_right_shift",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "logical_xor": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "i1"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "logical_xor",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "z",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "sub": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "sub",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "logical_and": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "i1"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "logical_and",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "z",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "const": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "value",
+        "TYPE": "ElementsAttr"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [],
+    "INPUT_NUM": 0,
+    "OP_NAME": "const",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "mul": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "shift",
+        "TYPE": "I32"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "mul",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "log": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "log",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "reduce_all": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reduce_all",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "while_loop": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "inputs",
+        "TYPE": "Variadic<Tosa_Tensor>"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "while_loop",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "output",
+        "TYPE": "Variadic<Tosa_Tensor>"
+      }
+    ]
+  },
+  "reciprocal": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reciprocal",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "avg_pool2d": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "kernel",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "stride",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          4
+        ],
+        "NAME": "pad",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_UnaryOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 4,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "anyNoI1"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "avg_pool2d",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "tanh": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "tanh",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "max_pool2d": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "kernel",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "stride",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          4
+        ],
+        "NAME": "pad",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 3,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "max_pool2d",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "identity": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "identity",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "reduce_prod": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reduce_prod",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "scatter": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "values_in",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          2
+        ],
+        "NAME": "indices",
+        "TYPE": "i32"
+      },
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "scatter",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "values_out",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "pow": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "pow",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "z",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "bitwise_or": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "bitwise_or",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "floor": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "floor",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "table": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input",
+        "TYPE": "i8ori16"
+      },
+      {
+        "DIM": [
+          1
+        ],
+        "NAME": "table",
+        "TYPE": "i8ori16"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "table",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "arithmetic_right_shift": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "round",
+        "TYPE": "Bool"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "int"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "int"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "arithmetic_right_shift",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "custom": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "identifier",
+        "TYPE": "Str"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "config",
+        "TYPE": "Str"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "implementation_attrs",
+        "TYPE": "Str"
+      }
+    ],
+    "ATTR_NUM": 3,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "inputs",
+        "TYPE": "Variadic<Tosa_Tensor>"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "custom",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "outputs",
+        "TYPE": "Variadic<Tosa_Tensor>"
+      }
+    ]
+  },
+  "matmul": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_MatMulOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "a",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "b",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "matmul",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          3
+        ],
+        "NAME": "c",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "reverse": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reverse",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "rsqrt": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "rsqrt",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "equal": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "floatOruint"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "floatOruint"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "equal",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "logical_or": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "i1"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input2",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "logical_or",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "z",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "abs": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "abs",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "cond_if": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "cond",
+        "TYPE": "i1"
+      },
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "inputs",
+        "TYPE": "Variadic<Tosa_Tensor>"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "cond_if",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "output",
+        "TYPE": "Variadic<Tosa_Tensor>"
+      }
+    ]
+  },
+  "sigmoid": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input",
+        "TYPE": "float"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "sigmoid",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "negate": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_UnaryOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "negate",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "transpose_conv2d": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          4
+        ],
+        "NAME": "out_pad",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "stride",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "dilation",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "out_shape",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_ConvOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 5,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "filter",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1
+        ],
+        "NAME": "bias",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "transpose_conv2d",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "reduce_min": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reduce_min",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "logical_not": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "input1",
+        "TYPE": "i1"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "logical_not",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "i1"
+      }
+    ]
+  },
+  "maximum": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input1",
+        "TYPE": "floatOruint"
+      },
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input2",
+        "TYPE": "floatOruint"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "maximum",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "resize": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          4
+        ],
+        "NAME": "scale",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "offset",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          2
+        ],
+        "NAME": "border",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "mode",
+        "TYPE": "Tosa_ResizeTypeAttr"
+      }
+    ],
+    "ATTR_NUM": 4,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "resize",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "conv3d": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          6
+        ],
+        "NAME": "pad",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          3
+        ],
+        "NAME": "stride",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          3
+        ],
+        "NAME": "dilation",
+        "TYPE": "I64"
+      },
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "quantization_info",
+        "TYPE": "OptionalAttr<Tosa_ConvOpQuantizationAttr>"
+      }
+    ],
+    "ATTR_NUM": 4,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          5
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          5
+        ],
+        "NAME": "weight",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          1
+        ],
+        "NAME": "bias",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 3,
+    "OP_NAME": "conv3d",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          5
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "transpose": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input1",
+        "TYPE": "any"
+      },
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "perms",
+        "TYPE": "Int32Or64"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "transpose",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          0
+        ],
+        "NAME": "output",
+        "TYPE": "outs Tosa_Tensor1Dto6D"
+      }
+    ]
+  },
+  "reduce_sum": {
+    "ATTR": [
+      {
+        "ArrayCount": [
+          0
+        ],
+        "NAME": "axis",
+        "TYPE": "I64"
+      }
+    ],
+    "ATTR_NUM": 1,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "input",
+        "TYPE": "any"
+      }
+    ],
+    "INPUT_NUM": 1,
+    "OP_NAME": "reduce_sum",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  },
+  "minimum": {
+    "ATTR": [],
+    "ATTR_NUM": 0,
+    "DESCRIPTION": "NULL",
+    "INPUT": [
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input1",
+        "TYPE": "floatOruint"
+      },
+      {
+        "DIM": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "NAME": "input2",
+        "TYPE": "floatOruint"
+      }
+    ],
+    "INPUT_NUM": 2,
+    "OP_NAME": "minimum",
+    "OUT_NUM": 1,
+    "RESULT": [
+      {
+        "DIM": [
+          100
+        ],
+        "NAME": "output",
+        "TYPE": "any"
+      }
+    ]
+  }
+}
