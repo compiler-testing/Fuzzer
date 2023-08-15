@@ -1,7 +1,7 @@
 ## Setup
 This section gives the steps, explanations and examples for getting the project running.
 
-#### 1) Clone this repo
+### 1. Clone this repo
 ```
 git clone https://github.com/compiler-testing/Fuzzer.git
 ```
@@ -11,22 +11,29 @@ init submodules
 git submodule update --init
 ```
 
-#### 2) Install MLIR
+### 2. Building
+#### 1) Build dependency LLVM
 Please refer to the [LLVM Getting Started](https://llvm.org/docs/GettingStarted.html) in general to build LLVM. Below are quick instructions to build MLIR with LLVM.
 
 The following instructions for compiling and testing MLIR assume that you have git, [ninja](https://ninja-build.org/), and a working C++ toolchain (see [LLVM requirements](https://llvm.org/docs/GettingStarted.html#requirements)).
 
 ```
-mkdir llvm-project-16/build
-cd llvm-project-16/build
-cmake -G Ninja ../llvm \
-   -DLLVM_ENABLE_PROJECTS=mlir \
-   -DLLVM_TARGETS_TO_BUILD="X86" \
-   -DCMAKE_BUILD_TYPE=Release \
-   -DLLVM_ENABLE_ASSERTIONS=ON 
-cmake --build . --target mlir-opt
+$ cd external
+$ mkdir llvm/build
+$ cd llvm/build
+$ cmake -G Ninja ../llvm \
+    -DLLVM_ENABLE_PROJECTS=mlir \
+    -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ENABLE_ASSERTIONS=ON \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+$ ninja
 ```
-#### 3) Run the testcase
+#### 2) Build MLIRFuzzer
+[MLIRFuzzer](https://github.com/compiler-testing/Fuzzer/tree/master/MLIRFuzzer) contains two components: Tosa graph generation and IR mutation. Please run the steps in the [README.md](https://github.com/compiler-testing/Fuzzer/blob/master/MLIRFuzzer/README.md) to build them.
+
+### 3. Run the testcase
 
 ```
 python ../fuzz_tool/src/main.py --opt=generator \
@@ -39,7 +46,7 @@ python ../fuzz_tool/src/main.py --opt=fuzz \
 --Mut=0 --DT=dt
 ```
 
-### Detection Structure
+### 4. Detection Structure
 
 ``` 
 llvm-project-16\mlir\test\lib:
