@@ -6,6 +6,11 @@ This section gives the steps, explanations and examples for getting the project 
 git clone https://github.com/compiler-testing/Fuzzer.git
 ```
 
+init submodules
+```
+git submodule update --init
+```
+
 #### 2) Install MLIR
 Please refer to the [LLVM Getting Started](https://llvm.org/docs/GettingStarted.html) in general to build LLVM. Below are quick instructions to build MLIR with LLVM.
 
