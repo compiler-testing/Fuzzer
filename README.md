@@ -7,17 +7,20 @@ git clone https://github.com/compiler-testing/Fuzzer.git
 ```
 
 #### 2) Install MLIR
+Please refer to the [LLVM Getting Started](https://llvm.org/docs/GettingStarted.html) in general to build LLVM. Below are quick instructions to build MLIR with LLVM.
+
+The following instructions for compiling and testing MLIR assume that you have git, [ninja](https://ninja-build.org/), and a working C++ toolchain (see [LLVM requirements](https://llvm.org/docs/GettingStarted.html#requirements)).
+
 ```
-cmake -G Ninja ../../llvm \
+mkdir llvm-project-16/build
+cd llvm-project-16/build
+cmake -G Ninja ../llvm \
    -DLLVM_ENABLE_PROJECTS=mlir \
    -DLLVM_TARGETS_TO_BUILD="X86" \
    -DCMAKE_BUILD_TYPE=Release \
-   -DLLVM_ENABLE_ASSERTIONS=ON \
-   -DCMAKE_C_COMPILER=clang \
-   -DCMAKE_CXX_COMPILER=clang++ 
+   -DLLVM_ENABLE_ASSERTIONS=ON 
+cmake --build . --target mlir-opt
 ```
-
-
 #### 3) Run the testcase
 
 ```
