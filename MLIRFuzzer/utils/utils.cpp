@@ -1,8 +1,8 @@
 //
 // Created by Administrator on 2023/3/4.
 //
-#include "mlir/TosaGen/utils.h"
-#include "mlir/TosaGen/opinfo.h"
+#include "TosaGen/utils.h"
+#include "TosaGen/opinfo.h"
 #include <unistd.h>
 #include "stdlib.h"
 #include <stdio.h>

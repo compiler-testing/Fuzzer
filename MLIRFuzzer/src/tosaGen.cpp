@@ -2,10 +2,10 @@
 // Created by nisl812 on 9/12/22.
 //
 
-#include "mlir/TosaGen/utils.h"
-#include "mlir/TosaGen/create.h"
-#include "mlir/TosaGen/opinfo.h"
-#include "mlir/TosaGen/transfer.h"
+#include "TosaGen/utils.h"
+#include "TosaGen/create.h"
+#include "TosaGen/opinfo.h"
+#include "TosaGen/transfer.h"
 
 using namespace mlir;
 using namespace std;

@@ -1,13 +1,11 @@
-# An out-of-tree MLIR dialect
-
-This is an example of an out-of-tree [MLIR](https://mlir.llvm.org/) dialect along with a standalone `opt`-like tool to operate on that dialect.
+# Intall mlir-fuzzer tools
 
 ## Building
 
 This setup assumes that you have built LLVM and MLIR in `$BUILD_DIR` and installed them to `$PREFIX`. To build and launch the tests, run
 ```sh
-$ export BUILD_DIR=/path/llvm-project-16/mlir/build
-$ cd MLIR
+$ export BUILD_DIR=/path/compiler-testing/external/llvm/build
+$ cd MLIRFuzzer
 $ mkdir build && cd build
 $ cmake -G Ninja .. \
     -DMLIR_DIR=$BUILD_DIR/lib/cmake/mlir \

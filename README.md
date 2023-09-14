@@ -27,7 +27,7 @@ $ cmake -G Ninja ../llvm \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_ENABLE_ASSERTIONS=ON \
     -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_COMPILER=clang++ 
 $ ninja
 ```
 #### 2) Build MLIRFuzzer
@@ -36,14 +36,8 @@ $ ninja
 ### 3. Run the testcase
 
 ```
-python ../fuzz_tool/src/main.py --opt=generator \
---path=path/../llvm-project-16/ --sqlName=sqlname \
---Mut=0 --DT=dt
-```
-```
-python ../fuzz_tool/src/main.py --opt=fuzz \
---path=path/../llvm-project-16/ --sqlName=sqlname \
---Mut=0 --DT=dt
+cd fuzz_tool
+bash run.sh
 ```
 
 ### 4. Detection Structure

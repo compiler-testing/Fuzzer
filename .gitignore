@@ -1,10 +1,6 @@
-data
-data_300
+# data
 .vscode
 __pycache__
-outputs
 logs
-case
-results
+# case
 build
-.zip

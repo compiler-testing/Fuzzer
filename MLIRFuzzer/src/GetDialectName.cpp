@@ -1,5 +1,5 @@
 
-#include "mlir/TosaGen/utils.h"
+#include "TosaGen/utils.h"
 #include "mlir/IR/Attributes.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/PatternMatch.h"
@@ -15,10 +15,6 @@
 #include "stdlib.h"
 #include <stdio.h>
 #include <string.h>
-
-
-
-//#include "mlir/TosaGen/TosaGenUtils.h"
 
 using namespace mlir;
 using namespace std;

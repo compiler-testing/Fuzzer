@@ -1,9 +1,9 @@
 //
 // Created by Administrator on 2023/3/4.
 //
-#include "mlir/TosaGen/create.h"
-#include "mlir/TosaGen/opinfo.h"
-#include "mlir/TosaGen/utils.h"
+#include "TosaGen/create.h"
+#include "TosaGen/opinfo.h"
+#include "TosaGen/utils.h"
 
 extern Utils genUtils;
 extern InfoGen infogen;
