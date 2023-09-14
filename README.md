@@ -35,54 +35,16 @@ $ ninja
 
 ### 3. Run the testcase
 
+- generate tosa graph
 ```
 cd fuzz_tool
-bash run.sh
+bash run_generator.sh
+```
+- run fuzzing loop
+
+```
+cd fuzz_tool
+bash run_fuzzing.sh
 ```
 
 ### 4. Detection Structure
-
-``` 
-llvm-project-16\mlir\test\lib:
--Pass
-    CMakeLists.txt
-    GetDialectName.cpp
-    MIX.cpp      <- mixing mutation
-    OpsTowardPass.json
-    tosaGen.cpp  <- tosa graph generation
-            
--TosaGen
-    CMakeLists.txt
-    create.cpp
-    opinfo.cpp
-    tosaOps.json
-    transfer.cpp
-    utils.cpp
-```
-
-```
-fuzz_tool:.
-├─case
-├─conf
-│      conf.yml
-│      init.sql
-└─src
-    │  main.py
-    ├─fuzz
-    │    fuzz.py
-    │    fuzz1.py
-    │    pass_enum.py             
-    ├─generator
-    │     tosaGen.py          
-    └─utils
-        │  config.py
-        │  dbutils.py
-        │  logger_tool.py
-        │  passinfo.txt
-        │  pass_analysis.py
-        │  test.py
-        │  __init__.py
-        │  
-        └─__pycache__
-                __init__.cpython-39.pyc
-```
