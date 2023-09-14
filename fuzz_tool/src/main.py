@@ -16,8 +16,9 @@ def get_args():
     arg_parser.add_argument('--opt', required=True,
                             choices=['generator', 'fuzz', 'report'])
     arg_parser.add_argument('--sqlName',required=True)
-    arg_parser.add_argument('--Mut',required=True,choices=['0', '1', '2', '3'])  #no mix rep mut
-    arg_parser.add_argument('--DT',required=True,choices=['r', 'rr','c','dt'])
+    arg_parser.add_argument('--mode',default='multi-branch',choices=['api', 'chain', 'multi-branch'])
+    arg_parser.add_argument('--Mut',default='0',choices=['0', '1', '2', '3'])  #no mix rep mut
+    arg_parser.add_argument('--DT',default='dt',choices=['r', 'rr','c','dt'])
     return arg_parser.parse_args(sys.argv[1:])
 
 
@@ -51,7 +52,7 @@ def main():
         # initialize database
         create_new_table(conf)
         # generate tosa graphs
-        generate_user_cases(conf, conf.count)
+        generate_user_cases(conf, conf.count,args.mode)
 
     elif args.opt == 'fuzz':
         from fuzz.fuzz import Fuzz
@@ -67,7 +68,7 @@ def main():
             nt= now.timestamp()
             print(datetime.datetime.now())
             conf.Iter +=1    
-            fuzzer.process(conf.flag_VPA,args.Mut,args.DT)
+            fuzzer.process(args.Mut,args.DT)
             if now.__gt__(end):
                 break
         print("time out!!!")

@@ -16,7 +16,7 @@ database:
 # set tosa graph generator
 generator:
   empty_func_file: "./case/empty.mlir"  # empty fuction, used to generate tosa graph
-  count: 10  # the number of tosa graphs
+  count: 100  # the number of tosa graphs
 
 fuzz:
   analysis_seed_file: "/src/temp.json" 
@@ -24,5 +24,3 @@ fuzz:
   Nmax: 1
   mutate_flag: "mutate"
   flag_mutate: 1 
-  flag_VPA: 0
-  diff_threshold: 0.1

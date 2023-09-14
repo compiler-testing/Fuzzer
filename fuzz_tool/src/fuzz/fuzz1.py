@@ -125,51 +125,18 @@ def analysis_and_save_seed(seed_file,temp_file,result, config: Config, flag):
                                                 lowerPasses,flag)
 
 
-def setOptSeq(flag_VPA,dia):
+def setOptSeq(dia):
     """
     1.启用脆弱性分析：优化序列：VP + 随机优化
     2.随机优化
     """
     list = []
 
-    #启用脆弱性分析,优先测试脆弱优化pass
-    if (flag_VPA == 1):    
-        b = 3/340
-        a = 159/6290
-        d = 1/340
-        c = 1/170
-        
-        P1 = np.full(len(OptimizePass.ND_1), a)
-        P2 = np.full(len(OptimizePass.ND_2), b)
-        P3 = np.full(len(OptimizePass.ND_3), c)
-        P4 = np.full(len(OptimizePass.ND_4), d)
-
-        p_list = []
-        p_list.extend(P1)
-        p_list.extend(P2)
-        p_list.extend(P3)
-        p_list.extend(P4)
-     
-        
-        pass_list = []
-        pass_list.extend(OptimizePass.ND_1)
-        pass_list.extend(OptimizePass.ND_2)
-        pass_list.extend(OptimizePass.ND_3)
-        pass_list.extend(OptimizePass.ND_4)
-        np.random.seed(0)
-        p = np.array(p_list)
-        for i in range(0,5):
-            index = np.random.choice(pass_list, p=p.ravel())
-            list.append(index)
-        # print(list)
-        list.extend(get_rand_pass_pipe(OptimizePass.all,5))
-        # print(list)
-    else:  #不启用脆弱性分析,随机测试优化pass  
-        # list.extend(get_rand_pass_pipe(OptimizePass.all,10))
-        savefile = "/../MLIRFuzzing/bugpre/data/vulpass.npy"
-        npy_data = np.load(savefile,allow_pickle=True)
-        if dia=="affine":
-            list.extend(get_rand_pass_pipe(npy_data.tolist()["Affine"],5))
+    # list.extend(get_rand_pass_pipe(OptimizePass.all,10))
+    savefile = "/../MLIRFuzzing/bugpre/data/vulpass.npy"
+    npy_data = np.load(savefile,allow_pickle=True)
+    if dia=="affine":
+        list.extend(get_rand_pass_pipe(npy_data.tolist()["Affine"],5))
 
     random.shuffle(list)
     # list.append("-verify-each")
@@ -916,7 +883,7 @@ class Fuzz111:
         log.info(dia + "-->" + target)
         Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
-    def process(self,flag_VPA,Mut):
+    def process(self,Mut):
         conf = self.config
         log.info("Iter :"+ str(conf.Iter))
         seed_file = conf.temp_dir + "seed" + ".mlir"
@@ -975,12 +942,10 @@ class Fuzz111:
                     if (result["return_code"] == 0) :
                         analysis_and_save_seed(seed_file,mut_file,result, conf,flag)
 
-            if(flag_VPA==1):
-                log.info("================== Enable optimization (VPA) ====================")
-            else:
-                log.info("================== Enable optimization ====================")
+        
+            log.info("================== Enable optimization ====================")
             flag = "opt"
-            opt_pass= setOptSeq(flag_VPA,dia)
+            opt_pass= setOptSeq(dia)
             result = execute_mlir(seed_file, opt_file, sid, raw_mlir, opt_pass, conf,flag,[])
             if (result["return_code"] == 0):
                 analysis_and_save_seed(seed_file,opt_file,result, conf,flag)

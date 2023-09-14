@@ -155,60 +155,6 @@ def setOptSeqR():
     pass_list.append(passSeq)
 
     return pass_list
-
-# def setOptSeq(flag_VPA,dia):
-#     """
-#     1.启用脆弱性分析：优化序列：VP + 随机优化
-#     2.随机优化
-#     """
-#     list = []
-
-#     #启用脆弱性分析,优先测试脆弱优化pass
-#     if (flag_VPA == 1):    
-#         savefile = "/../MLIRFuzzing/bugpre/data/vulpass.npy"
-#         npy_data = np.load(savefile,allow_pickle=True)
-#         if dia=="affine":
-#             list.extend(get_rand_pass_pipe(npy_data.tolist()["Affine"],5))
-#         # b = 3/340
-#         # a = 159/6290
-#         # d = 1/340
-#         # c = 1/170
-        
-#         # P1 = np.full(len(OptimizePass.ND_1), a)
-#         # P2 = np.full(len(OptimizePass.ND_2), b)
-#         # P3 = np.full(len(OptimizePass.ND_3), c)
-#         # P4 = np.full(len(OptimizePass.ND_4), d)
-
-#         # p_list = []
-#         # p_list.extend(P1)
-#         # p_list.extend(P2)
-#         # p_list.extend(P3)
-#         # p_list.extend(P4)
-     
-        
-#         # pass_list = []
-#         # pass_list.extend(OptimizePass.ND_1)
-#         # pass_list.extend(OptimizePass.ND_2)
-#         # pass_list.extend(OptimizePass.ND_3)
-#         # pass_list.extend(OptimizePass.ND_4)
-#         # np.random.seed(0)
-#         # p = np.array(p_list)
-#         # for i in range(0,5):
-#         #     index = np.random.choice(pass_list, p=p.ravel())
-#         #     list.append(index)
-#         # # print(list)
-#         # list.extend(get_rand_pass_pipe(OptimizePass.all,5))
-#         # print(list)
-#     else:  #不启用脆弱性分析,随机测试优化pass  
-#         list.extend(get_rand_pass_pipe(OptimizePass.all,10))
-
-#     random.shuffle(list)
-#     # list.append("-verify-each")
-#     passSeq = " ".join(list)
-#     pass_list = []
-#     pass_list.append(passSeq)
-
-#     return pass_list
 def setLowerSeqR():
     # log.info("======combine candidates and randPass")
     list = []
@@ -920,7 +866,7 @@ class Fuzz:
             dbutils.db.executeSQL(sql)
 
     
-    def process(self,flag_VPA,Mut,DT):
+    def process(self,Mut,DT):
         conf = self.config
         log.info("Iter :"+ str(conf.Iter))
         seed_file = conf.temp_dir + "seed" + ".mlir"
@@ -930,16 +876,6 @@ class Fuzz:
         mut_file = conf.temp_dir + "mut" + ".mlir"
         opt_file = conf.temp_dir + "opt" + ".mlir"
         lower_file = conf.temp_dir + "lower" + ".mlir"
-
-        # 梳理流程：
-        # 1.连数据库，选种子（暂定随机选）
-        # 2.判断种子是否有候选降级pass
-        # 2.1 有candidate_lower_pass
-        # 2.1.1 直接组合优化降级pass，跑单步pass，结果存入result，新种子（跑的结果）存入seed_pool，并且分析新种子的方言以及候选降级pass，一起存入数据库
-        # 2.2 无candidate_lower_pass
-        # 2.2.1 有问题，存在种子池的种子一定要有方言级别和候选降级pass
-
-        
         
         from fuzz.fuzz1 import Fuzz111
         # if conf.Iter == 1:

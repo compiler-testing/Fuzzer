@@ -35,7 +35,7 @@ def seedAnalysis(config, target_file):
     return dialects,lowerPasses,operations
 
 
-def generate_user_cases(config: Config, seeds_count):
+def generate_user_cases(config: Config, seeds_count, mode):
     # for i in range(seeds_count):
     count=0;
     i = 0
@@ -45,8 +45,14 @@ def generate_user_cases(config: Config, seeds_count):
     while(count< seeds_count):
         log.info("======generate seed : " + str(count))
         target_file = config.temp_dir + str(count) + '.mlir'
-        cmd = '%s %s -tosaGen -o %s' % (config.mlir_opt, config.empty_func_file, target_file)
-        #  shell 为true，执行shell内置命令  subprocess.PIPE 表示为子进程创建新的管道
+        genrateOpt = "-tosaGen"
+        if mode=="api":
+            genrateOpt = "-tosaGenU"
+        elif mode=="chain":
+            genrateOpt = "-tosaGenC"
+
+        cmd = '%s %s %s -o %s' % (config.mlir_opt, config.empty_func_file, genrateOpt,target_file)
+        #subprocess.PIPE 表示为子进程创建新的管道
         pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8")
         try:
@@ -88,62 +94,3 @@ def generate_user_cases(config: Config, seeds_count):
     now = datetime.datetime.now()
     nw= now.timestamp()
     print(nw-st)
-
-def generate_official_cases(config, seeds_count):
-    # 4503
-    seed_file = config.temp_dir + "seed" + ".mlir"
-    if seeds_count > 4489:
-        log.info('available case count should less than 4503')
-        return
-    #llvm-project-16官方测试用例
-    sql = 'select * from official_case_llvm16_copy2 ORDER BY rand() limit ' + str(seeds_count)
-    seeds = dbutils.db.queryAll(sql)
-    # save to seed pool
-    for seed in seeds:
-        content = seed[3]
-        try:
-            f = open(seed_file, 'w', encoding="utf-8")  # w 的含义为可进行读写
-            f.write(content)  # file.write()为写入指令
-            f.close()
-            dialects,candidate_lower_pass,operations = seedAnalysis(config,seed_file)
-            log.info("======generate seed : " + str(seeds_count))
-            sql = "insert into " + config.seed_pool_table + \
-                  " (preid,source,mtype,dialect,operation,content,n, candidate_lower_pass) " \
-                  "values ('%s','%s','%s','%s','%s','%s','%s','%s')" \
-                  % \
-                  (0, 'O', '', dialects,operations, content, 0, candidate_lower_pass)
-            # sql = "insert into " +config.seed_pool_table+ \
-            #       " (dialect,content,n, candidate_lower_pass, cooperation) " \
-            #       "values ('%s','%s','%s','%s','%s')" \
-            #       % \
-            #       ('test', content, 0, '', 0)
-            dbutils.db.executeSQL(sql)
-        except Exception as e:
-            log.error('sql error', e)
-
-
-def load_test_suite(config):
-    #loading llvm-project-16官方测试用例
-    try:
-        sql = "INSERT INTO " + config.seed_pool_table +" SELECT * FROM llvm16_test_suite"
-        dbutils.db.executeSQL(sql)
-    except Exception as e:
-        log.error('sql error', e)
-
-def generate_cases(config: Config):
-    if config.type == 'o':
-        generate_official_cases(config, 2000)
-        # load_test_suite(config)
-        log.info('Loading test cases from llvm16_test_suite!')
-        # generate_official_cases(config, config.count)
-    elif config.type == 'u':
-        generate_user_cases(config, config.count)
-    elif config.type == 'ou':
-        half_count = int(config.count / 2)
-        generate_official_cases(config, half_count)
-        generate_user_cases(config, half_count)
-    else:
-        log.info('generate type error, please use [o] [u] [ou]')
-        return
-
-

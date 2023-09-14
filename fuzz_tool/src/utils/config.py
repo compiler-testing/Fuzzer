@@ -44,8 +44,6 @@ class Config:
         self.Nmax = fuzz['Nmax']
         self.mutate_flag = fuzz['mutate_flag']
         self.flag_mutate = fuzz['flag_mutate']
-        self.flag_VPA = fuzz['flag_VPA']
-        self.threshold = fuzz['diff_threshold']
 
         self.Iter = 0
 
