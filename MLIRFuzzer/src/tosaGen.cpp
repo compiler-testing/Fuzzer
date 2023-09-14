@@ -33,11 +33,8 @@ struct tosaGenpass
     ImplicitLocOpBuilder b = ImplicitLocOpBuilder::atBlockBegin(loc, firstbb);
     b.setInsertionPointToStart(firstbb);
 
-    //    ,"select"
-    //   ,"transpose_conv2d"
-    //    "equal",
-    // 
-    //"greater",
+    //TODO: more operators
+    // "select","transpose_conv2d""equal","greater"...
 
     llvm::ArrayRef<StringRef> opPool = {"concat","abs","bitwise_not", "ceil","clz","exp","floor","log","logical_not",
                                          "reciprocal","rsqrt","sigmoid","tanh","argmax","reduce_all","reduce_any","reduce_max","reduce_min","reduce_prod",
@@ -159,88 +156,3 @@ namespace mlir {
 void registertosaGen() { PassRegistration<tosaGenpass>();
 }}
 
-//// unary, have 0 attr
-//llvm::ArrayRef<StringRef> opNamex = {
-//    "abs",   "bitwise_not", "ceil", "clz",         "exp",
-//    "floor", "identity",    "log",  "logical_not", "reciprocal",
-//    "rsqrt", "sigmoid",     "tanh"}; // while_loop" , "identity",
-//// unary, have 1 attr
-//llvm::ArrayRef<StringRef> opNamen =
-//    {"argmax", "reduce_all", "reduce_any",  "reduce_max",
-//     "reduce_min", "reduce_prod", "reduce_sum",
-//     "reshape",    "reverse", "concat"}; //"custom", , "negate",
-//// unary, have 2 attrs
-//llvm::ArrayRef<StringRef> opName2 = {"reluN", "slice"};
-//// unary, have 3 attrs
-//llvm::ArrayRef<StringRef> opName3 = {"max_pool2d"};
-//// unary, have 4 attrs
-//llvm::ArrayRef<StringRef> opName4 = {"avg_pool2d", "clamp"};
-//// unary, have 7 attrs
-//// unary, have 7 attrs
-//llvm::ArrayRef<StringRef> opName5 = {"rescale", "resize"};
-//
-//// binary, have 0 attr
-//llvm::ArrayRef<StringRef> opNameX = {"add",         "bitwise_and",
-//                                     "bitwise_or",  "bitwise_xor",
-//                                     "div",         "equal",
-//                                     "greater",     "greater_equal",
-//                                     "logical_and", "logical_left_shift",
-//                                     "logical_or",  "logical_right_shift",
-//                                     "logical_xor", "maximum",
-//                                     "minimum",     "pow",
-//                                     "sub"}; //,"cond_if" ,,"gather" ,"transpose" ,     "table"
-//// binary, have 1 attr
-//llvm::ArrayRef<StringRef> opName7 = {"arithmetic_right_shift", "mul",
-//                                     "tile" , "concat"}; //,"matmul"
-//
-//// trinary, have 0 attr
-//llvm::ArrayRef<StringRef> opName8 = {"select"}; //"scatter"
-//                                                // trinary, have 1 attr
-//                                                // llvm::ArrayRef<StringRef> opName9 = {"fully_connected"}; //,"pad"
-//                                                // trinary, have 4 attr
-//                                                // llvm::ArrayRef<StringRef> opName10 = {"conv2d","conv3d","depthwise_conv2d","transpose_conv2d"}; trinary, have 5 attr llvm::ArrayRef<StringRef> opName11 = {"transpose_conv2d"};
-
-
-
-//    for(int i=0 ; i < opNum ; i++){
-//      if(i==0){ //创建第一个op：随机选择opcode
-//        string firstOp = infogen.getRandomOp(opPool1);
-//        ops.push_back(firstOp);
-//        cout <<"==="<<i <<"  testing opName:" << firstOp << endl;
-//
-//        //实例化info结构体，用于创建op
-//        auto opConstraint = genUtils.getConstraint(firstOp);
-//        infogen.setFirstOpInfo(b,loc,opConstraint);
-//      }
-//      else{ //创建第i个op：根据上一条op的tensor形状和类型创建
-//        funcOp.dump();
-//        string selectedOp = infogen.getNextOp(lastOp);
-//        if(selectedOp == " "){
-//          cout<<"==============break=================="<<endl;
-//          break;
-//        }
-//        //如果连续三个opshape或者type不变，更改shape或者type，避免同质化
-//        if(flag>=max_same){
-//          llvm::ArrayRef<StringRef> change = { "reshape","cast"};
-//          unsigned int r = genUtils.genRandomN(0,1);
-//          selectedOp = change[r].str();
-//          flag=0;
-//        }
-//        cout <<"==="<<i <<"  testing opName:" << selectedOp << endl;
-//
-//        //实例化info结构体，用于创建op
-//        auto opConstraint = genUtils.getConstraint(selectedOp);
-//        infogen.setNextOpInfo(b,loc,opConstraint,newOp);
-//      }
-//      constraint_info = {info.resultType,info.resultShape};
-//
-//      newOp = create.createOp(b,loc);
-//      lastOp = newOp;
-//      //用于检测当前op与上一个op的shape或者type是否相同
-//      if(!pre_resultShape.empty()){
-//        if (pre_resultShape==info.resultShape || pre_resultType == info.resultType)
-//          flag++;
-//      }
-//      pre_resultShape = info.resultShape;
-//      pre_resultType = info.resultType;
-//    }

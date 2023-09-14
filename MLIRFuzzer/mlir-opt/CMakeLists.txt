@@ -63,10 +63,10 @@ set(LIBS
 
 # Exclude from libMLIR.so because this has static options intended for
 # opt-like tools only.
-add_llvm_executable(mlir-fuzzer mlir-opt.cpp)
+add_llvm_executable(mlirfuzzer-opt mlir-opt.cpp)
 
-llvm_update_compile_flags(mlir-fuzzer)
-target_link_libraries(mlir-fuzzer PRIVATE ${LIBS})
+llvm_update_compile_flags(mlirfuzzer-opt)
+target_link_libraries(mlirfuzzer-opt PRIVATE ${LIBS})
 
-mlir_check_all_link_libraries(mlir-fuzzer)
+mlir_check_all_link_libraries(mlirfuzzer-opt)
 

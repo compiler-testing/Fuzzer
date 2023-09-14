@@ -1,4 +1,4 @@
-# Intall mlir-fuzzer tools
+# Intall mlirfuzzer-opt tools
 
 ## Building
 

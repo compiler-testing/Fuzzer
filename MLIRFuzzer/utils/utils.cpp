@@ -117,7 +117,7 @@ Json::Value Utils::getConstraint(StringRef selectedOp) {
   memset( szPath, 0x00, sizeof(szPath));
   // int ret =  readlink("/proc/self/exe", szPath, sizeof(szPath)-1 );
   int ret =  readlink("/proc/self/exe", szPath, 256);
-  //printf("ret:%d\n", ret);
+  // printf("ret:%d\n", ret);
   // printf("path:%s\n", szPath);
 
   char *token= NULL;
@@ -125,7 +125,9 @@ Json::Value Utils::getConstraint(StringRef selectedOp) {
 
   string path = token;
 
-  string filePath = path + "test/lib/TosaGen/tosaOps.json";
+  string filePath = path + "utils/tosaOps.json";
+
+  // string filePath = path + "test/lib/TosaGen/tosaOps.json";
   std::ifstream is;
   is.open (filePath, std::ios::binary );
 

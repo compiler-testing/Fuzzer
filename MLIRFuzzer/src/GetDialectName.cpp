@@ -19,29 +19,6 @@
 using namespace mlir;
 using namespace std;
 
-
-
-// extern TosaGenUtils genUtils;
-//先不用
-//void writeJson(string lobal,llvm::SmallVector<string> content)
-//{
-////  ofstream ofile;
-////  ofile.open("/home/xmr/llvm-15/mlir/test/temp.json");
-//
-//  Json::Value root;
-//  for (int i = 0; i < content.size(); ++i) {
-//    root[lobal].append(content[i]);
-//  }
-//  ofstream os;
-//  os.open("/home/xmr/llvm-project-15/mlir/test/temp.json", std::ios::out | std::ios::app);
-//  if (!os.is_open())
-//    cout << "error：can not find or create the file which named \" demo.json\"." << endl;
-//  Json::StyledWriter sw;  //缩进输出
-//  os << sw.write(root);
-//  os.close();
-//}
-//
-
 extern Utils genUtils;
 
 namespace {
@@ -56,11 +33,6 @@ struct GetDialectName
     llvm::SmallVector<string> lower_pass;  //最终匹配的Pass
     llvm::SmallVector<string> disable;  //无效的pass
     //获得当前文件的绝对路径目录,用于下面的json文件路径
-    //    char *path = NULL;
-    //    path = getcwd(NULL,0);   // cout<<path: /home/xmr/llvm-project-15/mlir/test
-    //    string current_dir;
-    //    current_dir = path;
-    //    free(path);
 
     char szPath[128];
     memset( szPath, 0x00, sizeof(szPath));
@@ -71,14 +43,11 @@ struct GetDialectName
 
     char *token= NULL;
     token = strtok(szPath, "b");
-
     string path = token;
 
-
-    //path-> home/ty/llvm-project-16/mlir/
     //==================  修改成自己的路径  ================================
-    string OpsTowardPass = "test/OpsTowardPass.json";
-    string temp = "test/temp.json";
+    string OpsTowardPass = "src/OpsTowardPass.json";
+    string temp = "src/temp.json";
     //===================================================================
 
     string OpsTowardPass_json = path + OpsTowardPass;

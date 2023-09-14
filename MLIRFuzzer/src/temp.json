@@ -1,0 +1,23 @@
+{
+   "DialectNum" : "2",
+   "LowerPass" : [
+      "-pass-pipeline=\"func.func(tosa-to-linalg)\"",
+      "-pass-pipeline=\"func.func(tosa-to-linalg-named)\""
+   ],
+   "LowerPassNum" : "2",
+   "dialect" : [ "tosa", "func" ],
+   "operation" : [
+      "tosa.depthwise_conv2d",
+      "tosa.reduce_max",
+      "tosa.logical_left_shift",
+      "tosa.abs",
+      "tosa.log",
+      "tosa.add",
+      "tosa.bitwise_xor",
+      "tosa.exp",
+      "tosa.reverse",
+      "func.return",
+      "func.func",
+      "builtin.module"
+   ]
+}
