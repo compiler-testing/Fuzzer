@@ -22,7 +22,7 @@ struct tosaGenUnitpass
     : public PassWrapper<tosaGenUnitpass, OperationPass<func::FuncOp>> {
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(tosaGenUnitpass)
   StringRef getArgument() const final { return "tosaGenU"; }
-  StringRef getDescription() const final { return "tosaGenU."; }
+  StringRef getDescription() const final { return "generate tosa graph with one operator."; }
   void getDependentDialects(DialectRegistry &registry) const override {
     registry.insert<tosa::TosaDialect>();
   }

@@ -10,27 +10,32 @@
 using namespace mlir;
 using namespace std;
 
-Utils genUtils;
-InfoGen infogen;
-Create create;
+//Instantiate objects of these classes
+Utils genUtils;     //commonly used utility functions
+InfoGen infogen;    //processing related to the opInfo struct
+Create create;      //implementation of creating op
+Transfer transfer;  //infer op's result according to the input and attribute 
+
+//Instantiate the struct(opInfo) 
 opInfo info;
-Transfer transfer;
+
 
 namespace {
 struct tosaGenpass
     : public PassWrapper<tosaGenpass, OperationPass<func::FuncOp>> {
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(tosaGenpass)
   StringRef getArgument() const final { return "tosaGen"; }
-  StringRef getDescription() const final { return "tosaGen."; }
+  StringRef getDescription() const final { return "generate tosa graph with multi-branch structure."; }
   void getDependentDialects(DialectRegistry &registry) const override {
     registry.insert<tosa::TosaDialect>();
   }
   void runOnOperation() override {
     auto funcOp = getOperation();
-
     Block *firstbb = &(*funcOp.begin());
     Location loc = firstbb->begin()->getLoc();
     ImplicitLocOpBuilder b = ImplicitLocOpBuilder::atBlockBegin(loc, firstbb);
+
+    //Set the insertion point of first op
     b.setInsertionPointToStart(firstbb);
 
     //TODO: more operators
@@ -43,14 +48,13 @@ struct tosaGenpass
                                          "conv3d","depthwise_conv2d","avg_pool2d","max_pool2d","reshape","cast"};
 
     
-    //  llvm::ArrayRef<StringRef> opPool = {"concat","abs","bitwise_not","pow","sub","conv2d", "conv3d"};                               
+                         
 
-        //    // 选择要创建的op个数
+    // set the number of operators 
     int opNum = genUtils.genRandomN(1, 20);
     opNum = 10;
     cout << opNum << endl;
 
-    // 创建第一个op
     Value newOp;
     Value preOp;
     int flag_shape= 0;
@@ -58,29 +62,36 @@ struct tosaGenpass
 
     Type pre_result;
     string selectedOp;
-    SmallVector<Value> valuePool;
-    DenseMap<int, Value> tails;
+    SmallVector<Value> valuePool;  // Save all the created ops.
+    DenseMap<int, Value> tails;    // Save the tail nodes of all branches in the graph.
+
+    // Incrementally insert nodes into the graph until the model size (opNum) is satisfied.
     for (int i = 0; i < opNum; i++) {
-      selectedOp = genUtils.getRandomOp(opPool);
+      selectedOp = genUtils.getRandomOp(opPool);       // select operator randomly
       cout << "===" << i << "  testing opName:" << selectedOp << endl;
+      // create the first op, which is a new branch.
       if (i == 0) {
-        
         newOp = create.createNewBranch(b, loc, funcOp, selectedOp);
-        valuePool.push_back(newOp);
-        tails.insert(std::make_pair(0, newOp));
+        valuePool.push_back(newOp);        // update valuePool
+        tails.insert(std::make_pair(0, newOp));    // update tails
       }else {
+        //Initialize the struct opinfo.
         infogen.initInfo(selectedOp);
 
-        // find a compatible insertion
         Value t;
         Value insertion;
         SmallVector<int,8> index;
         int chainIndex = -1;
 
+        //Find a set of feasible insertion points S.
         SmallVector<Value> insertPoints = genUtils.typeMatch(valuePool);
-        if(!insertPoints.empty()){//存在兼容节点
+
+        //The insertion point is available
+        if(!insertPoints.empty()){
           cout<<"insertPoints"<<insertPoints.size()<<endl;
-          //寻找兼容的尾部节点
+          // Check whether the insertion point includes the tail node
+          // If it does, perform tail insertion.  
+          // otherwise, use random insertion.
           for(auto pair : tails){
             t = pair.second;
             for(auto vi : insertPoints){
@@ -90,44 +101,56 @@ struct tosaGenpass
               }
             }
           }
-          if(!index.empty()){ //寻找兼容的尾部节点
+
+          // 1. tail insertion
+          if(!index.empty()){
             cout<<"tail insertion"<<endl;
             chainIndex = genUtils.genRandomN(0,index.size()-1);
             insertion = tails[index[chainIndex]];
-          }else{//寻找兼容的插入点
-            cout<<"Insert garbage node"<<endl;
+          }else{   // 2.insertion randomly
+            cout<<"insert randomly"<<endl;
             insertion = insertPoints[genUtils.genRandomN(0,insertPoints.size()-1)];
           }
+          insertion.dump();
 
-        insertion.dump();
-        infogen.addInputType(b, insertion);
-        Value v = genUtils.skipMatch(valuePool);
-        if(v==nullptr){
-          infogen.addInputs(b, loc, funcOp, insertion);
-        }else{
-          info.inputs.push_back(insertion);
-          info.inputs.push_back(v);
-          info.inputType={};
-          info.inputType.push_back(insertion.getType());
-          info.inputType.push_back(v.getType());
-        }
-        infogen.addAttrs(b, loc);
-        infogen.addResult(b);
-        newOp = create.createOp(b, loc);
-        valuePool.push_back(newOp);
-        if(chainIndex!=-1){
-            tails[chainIndex] = newOp;
-        }
+          //Set the input type that satisfies the op's constraints.
+          infogen.addInputType(b, insertion);
 
-        }else{//插入新的分支
+          //Find a compatible nodes to establish skip connections
+          Value v = genUtils.skipMatch(valuePool);
+
+          //If none is found, randomly generate inputs that satisfy op's constraints."
+          if(v==nullptr){
+            infogen.addInputs(b, loc, funcOp, insertion);
+          }else{  //add skip connections
+            info.inputs.push_back(insertion);
+            info.inputs.push_back(v);
+            info.inputType={};
+            info.inputType.push_back(insertion.getType());
+            info.inputType.push_back(v.getType());
+          }
+
+          //Set the value of attribute.
+          infogen.addAttrs(b, loc);
+
+          //Infer the shape and type of op's result
+          infogen.addResult(b);
+
+          //create op
+          newOp = create.createOp(b, loc);
+          valuePool.push_back(newOp);      // update valuePool
+          if(chainIndex!=-1){
+              tails[chainIndex] = newOp;   // update tails
+          }
+
+        }else{  // 3.create a new branch 
           cout<<"create new branch"<<endl;
           newOp = create.createNewBranch(b, loc, funcOp, selectedOp);
-          valuePool.push_back(newOp);
-          tails.insert(std::make_pair(tails.size(), newOp));
+          valuePool.push_back(newOp);                         // update valuePool
+          tails.insert(std::make_pair(tails.size(), newOp));  // update tails
         }
       }
     }
-
 
       func::ReturnOp returnOp;
       if (!firstbb->empty())

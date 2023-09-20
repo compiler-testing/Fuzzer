@@ -22,7 +22,7 @@ struct tosaGenChainpass
     : public PassWrapper<tosaGenChainpass, OperationPass<func::FuncOp>> {
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(tosaGenChainpass)
   StringRef getArgument() const final { return "tosaGenC"; }
-  StringRef getDescription() const final { return "tosaGenC"; }
+  StringRef getDescription() const final { return "generate tosa graph with singal chain structure."; }
   void getDependentDialects(DialectRegistry &registry) const override {
     registry.insert<tosa::TosaDialect>();
   }
