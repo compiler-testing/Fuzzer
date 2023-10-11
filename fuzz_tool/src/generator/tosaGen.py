@@ -51,7 +51,7 @@ def generate_user_cases(config: Config, seeds_count, mode):
         elif mode=="chain":
             genrateOpt = "-tosaGenC"
 
-        cmd = '%s %s %s -o %s' % (config.mlir_opt, config.empty_func_file, genrateOpt,target_file)
+        cmd = '%s %s %s -o %s' % (config.mlirfuzzer_opt, config.empty_func_file, genrateOpt,target_file)
         #subprocess.PIPE 表示为子进程创建新的管道
         pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8")

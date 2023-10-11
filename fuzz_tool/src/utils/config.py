@@ -25,8 +25,10 @@ class Config:
         self.report_table = 'report_' + label
         # 2. common config
         common = conf['common']
+        external_mlir_build_path = common['external_mlir_build_path']
         mlir_build_path = common['mlir_build_path']
-        self.mlir_opt = mlir_build_path + common['mlir_opt']
+        self.mlir_opt = external_mlir_build_path + common['mlir_opt']
+        self.mlirfuzzer_opt = mlir_build_path + common['mlirfuzzer_opt']
         self.temp_dir = common['temp_dir']+ label+'/'
 
         if not os.path.exists(self.temp_dir):

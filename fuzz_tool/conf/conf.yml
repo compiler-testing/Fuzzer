@@ -1,8 +1,10 @@
 common:
-
+  external_mlir_build_path: '../external/llvm'   # external mlir build path
   mlir_build_path: '../MLIRFuzzer'   # mlirfuzzer-opt build path
-  mlir_opt: '/build/bin/mlirfuzzer-opt'  # the tool used to Tosa graph generation and IR mutation
+  mlirfuzzer_opt: '/build/bin/mlirfuzzer-opt'  # the tool used to Tosa graph generation and IR mutation
+  mlir_opt: '/build/bin/mlir-opt'
   temp_dir: '../logs/' # Used to save intermediates 
+
 
 
 # set database info
@@ -11,12 +13,12 @@ database:
   port: 23515
   username: "root"
   passwd: "root123"
-  db: "mlir"
+  db: "ty_mlir"
 
 # set tosa graph generator
 generator:
   empty_func_file: "./case/empty.mlir"  # empty fuction, used to generate tosa graph
-  count: 100  # the number of tosa graphs
+  count: 500  # the number of tosa graphs
 
 fuzz:
   analysis_seed_file: "/src/temp.json" 

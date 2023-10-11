@@ -37,7 +37,7 @@ def IRanalysis(temp_file, config:Config):
     """
     分析mlir文本的方言和pass
     """
-    cmd = '%s %s -allow-unregistered-dialect -GetDialectName ' % (config.mlir_opt, temp_file)
+    cmd = '%s %s -allow-unregistered-dialect -GetDialectName ' % (config.mlirfuzzer_opt, temp_file)
     start_time = int(time() * 1000)
 
     pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -877,28 +877,15 @@ class Fuzz:
         opt_file = conf.temp_dir + "opt" + ".mlir"
         lower_file = conf.temp_dir + "lower" + ".mlir"
         
-        from fuzz.fuzz1 import Fuzz111
-        # if conf.Iter == 1:
+        from fuzz.directed import DTFuzz
         if(DT=="dt"):
-            log.info("LowerGraphIR")
-            Fuzz111.LowerGraphIR(self,conf,seed_file,lower_file,opt_file,Mut,mut_file)
-        # else:
-            # dia = "affine"
-            # num = 1000
-            # seeds = Fuzz111.select_seed_DT_limit(self,conf.Nmax,dia,num)
-
-            # DT='c'
-
-         
+            log.info("Directed Testing")
+            DTFuzz.DirectedLower(self,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+     
         seeds = self.select_seed(conf.Nmax)
-
-        # if len(seeds)==0:
-        #     print("generate seed")
         for selected_seed in seeds:
             sid = selected_seed[0]
             dialects,operation,raw_mlir,n,lowerPass = selected_seed[-5:]
-            if "scf.parallel" in operation:
-                print("scf.parallel")
             dialect_list = dialects.split(',')
             OPdict = {key: [] for key in dialect_list}
             if operation !=' ':
@@ -913,11 +900,8 @@ class Fuzz:
             f = open(seed_file, 'w', encoding="utf-8")  # w 的含义为可进行读写
             f.write(raw_mlir)  # file.write()为写入指令
             f.close()
-
             log.info(sid)
-            # log.info(raw_mlir)
 
-            
             if Mut=='1':
                 Mut = np.random.choice(['0','1','0'])
 
@@ -930,8 +914,6 @@ class Fuzz:
                 if (result["return_code"] == 0) :
                     analysis_and_save_seed(seed_file,mut_file,result, conf,flag)
 
-
-          
             #完全随机的选择
             if(DT=="rr"):
                 log.info("================== Enable optimization ====================")

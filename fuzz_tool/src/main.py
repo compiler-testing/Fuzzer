@@ -23,6 +23,7 @@ def get_args():
 
 
 def create_new_table(conf: Config):
+    # with open('/home/ty/compiler-testing/fuzz_tool/conf/init.sql', 'r',encoding="utf-8") as f:
     with open('./conf/init.sql', 'r',encoding="utf-8") as f:
         sql = f.read().replace('seed_pool_table', conf.seed_pool_table) \
             .replace('result_table', conf.result_table) \
@@ -41,7 +42,8 @@ def create_new_table(conf: Config):
 
 
 def main():
-    args = get_args()  # 运行参数，例如Namespace(opt='fuzz', config='../conf/conf.json')
+    args = get_args()  
+    # config_path = '/home/ty/compiler-testing/fuzz_tool/conf/conf.yml'
     config_path = './conf/conf.yml'  # 配置文件路径
     conf = Config(config_path,args.sqlName)
     
@@ -59,9 +61,7 @@ def main():
         fuzzer = Fuzz(conf)
         start = datetime.datetime.now()
         end = start + datetime.timedelta(minutes=conf.run_time)
-        
         st= start.timestamp()
-        
         nt = st
         while (nt-st<43200):
             now = datetime.datetime.now()

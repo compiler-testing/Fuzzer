@@ -10,4 +10,4 @@ Customized Configuration:
 
 COMMENT
 
-python ./src/main.py --opt=generator  --sqlName=MLIRFuzz 
+python3 ./src/main.py --opt=generator  --sqlName=MLIRFuzz 

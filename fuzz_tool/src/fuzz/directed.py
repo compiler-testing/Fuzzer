@@ -37,7 +37,7 @@ def IRanalysis(temp_file, config:Config):
     """
     分析mlir文本的方言和pass
     """
-    cmd = '%s %s -allow-unregistered-dialect -GetDialectName ' % (config.mlir_opt, temp_file)
+    cmd = '%s %s -allow-unregistered-dialect -GetDialectName ' % (config.mlirfuzzer_opt, temp_file)
     start_time = int(time() * 1000)
 
     pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -120,8 +120,8 @@ def analysis_and_save_seed(seed_file,temp_file,result, config: Config, flag):
             # log.info("===IRanalysis")
             # 读取temp.json文件，获取当前mlir文本中的方言和降级pass
             lowerPasses = lowerPasses.replace('  ', ' ')
-            fuzzer = Fuzz111(config)
-            Fuzz111.mutate_success_handler(fuzzer, result["sid"], result["mutate_type"], dialects,operations, processed_mlir,
+            fuzzer = DTFuzz(config)
+            DTFuzz.mutate_success_handler(fuzzer, result["sid"], result["mutate_type"], dialects,operations, processed_mlir,
                                                 lowerPasses,flag)
 
 
@@ -444,7 +444,7 @@ def execute_mlir(input_file, output_file, sid, raw_mlir, singlePass, config: Con
     result["stderr"] = stderr
     result["duration"] = duration
 
-    fuzzer = Fuzz111(config)
+    fuzzer = DTFuzz(config)
     from fuzz.fuzz import Fuzz
     if (result["return_code"] != 0):  # 运行结果出错，存入数据库，reslut
         Fuzz.failer_handler(fuzzer, result,flag,config)
@@ -456,7 +456,7 @@ def runPass_OnlyLower(input_file, output_file, result, candidate_lowerPass, conf
     result = execute_pass(input_file, output_file, result, candidate_lowerPass, config,flag)
     fuzzer = Fuzz(config)
     if (result["return_code"] != 0):  # 运行结果出错，存入数据库，reslut
-        Fuzz111.failer_handler(fuzzer, result,flag,config)
+        DTFuzz.failer_handler(fuzzer, result,flag,config)
 
     return result
 
@@ -515,8 +515,8 @@ class reportObject:
 
 
 
-
-class Fuzz111:
+# Directed Testing
+class DTFuzz:
     def __init__(self, config: Config):
         self.config = config
 
@@ -643,11 +643,11 @@ class Fuzz111:
         error = ''
         #crash & segmentation fault
         if stderr.find("Assertion") >= 0 or stderr.find("LLVM ERROR:") >=0 or stderr.find("Segmentation fault (core dumped)")>=0:
-            error = Fuzz111.SplitContent(self,stderr)
+            error = DTFuzz.SplitContent(self,stderr)
         else:  # time out & others
             error = firstLineInStderr
 
-        Fuzz111.updateReportModel(self,sid,error,report_stack_dict,stderr,return_code,content,report_model_dict)
+        DTFuzz.updateReportModel(self,sid,error,report_stack_dict,stderr,return_code,content,report_model_dict)
          
         for key,value in report_model_dict.items():
             log.info("===== new report record insert table =====")
@@ -690,7 +690,7 @@ class Fuzz111:
         returnCode_list = [-9,134,139]
 
         if return_code in returnCode_list:
-            Fuzz111.stackStatistic(self,sid,return_code,stderr,content,conf)
+            DTFuzz.stackStatistic(self,sid,return_code,stderr,content,conf)
 
         now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         try:
@@ -720,11 +720,11 @@ class Fuzz111:
     def generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file):
         if '.' in dia:
             op = dia
-            seeds = Fuzz111.select_seed_DT_op(self,conf.Nmax,op,100)
+            seeds = DTFuzz.select_seed_DT_op(self,conf.Nmax,op,5)
         elif dia =="":
-            seeds = Fuzz111.select_seed(self,conf.Nmax,100)
+            seeds = DTFuzz.select_seed(self,conf.Nmax,5)
         else:
-            seeds = Fuzz111.select_seed_DT(self,conf.Nmax,dia,300)
+            seeds = DTFuzz.select_seed_DT(self,conf.Nmax,dia,10)
 
         for selected_seed in seeds:
             sid = selected_seed[0]
@@ -791,8 +791,6 @@ class Fuzz111:
             if target =="":
                 lower_pass = setLowerSeq(lowerPass)
 
-
-
             flag = "lower"
             result = execute_mlir(seed_file, lower_file, sid, raw_mlir, lower_pass, conf, flag,[])
             from fuzz.fuzz import Fuzz
@@ -812,76 +810,75 @@ class Fuzz111:
                 analysis_and_save_seed(seed_file,opt_file,result, conf,flag)
         
 
-
-    def LowerGraphIR(self,conf,seed_file,lower_file,opt_file,Mut,mut_file):
+    def DirectedLower(self,conf,seed_file,lower_file,opt_file,Mut,mut_file):
         
         dia = "tosa"
         target ="linalg"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="linalg"
         target ="affine"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="linalg"
         target ="scf.parallel"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="affine"
         target ="affine.parallel"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="affine"
         target ="scf.for"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
 
         dia ="scf.parallel"
         target ="gpu"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="gpu"
         target ="async"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="math"
         target ="spirv"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
         dia ="gpu.launch"
         target ="gpu.launch_func"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="scf.parallel"
         target ="omp"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia =""
         target =""
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
         # dia ="vector"
         # target ="x86vector"
-        # Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file)
+        # DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file)
 
         dia ="gpu.launch"
         target ="nvvm"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
         dia ="gpu.launch"
         target ="rocdl"
         log.info(dia + "-->" + target)
-        Fuzz111.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
+        DTFuzz.generateLowIR(self,dia,target,conf,seed_file,lower_file,opt_file,Mut,mut_file)
 
     def process(self,Mut):
         conf = self.config
@@ -1031,32 +1028,4 @@ class Fuzz111:
             if i==800:
                 break
 
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    # str = "/../llvm15/mlir/mytest/fuzz_tool/case/template/seed.mlir:4:10: error: failed to legalize operation 'tosa.max_pool2d'"
-    # m = re.compile(r"to legalize operation '(.+)'")
-    # result = m.findall(str)
-    # print(result[0])
-    config_path = '/..xmr/mlir/llvm-16/mlir/mytest/fuzz_tool/conf/conf.yml'  # 配置文件路径
-    conf = Config(config_path)
-    logger_tool.get_logger()
-    dbutils.db = dbutils.myDB(conf)
-    #sql = "select * from " + self.config.report_table + " where stderr is not NULL and stderr != ''"
-    #sql = "select * from result_2023031118_o_xmr where stderr is not NULL and stderr != ''"
-    sql = "select * from result_2023031420_o_xmr where sid=205208 "
-    data = dbutils.db.queryAll(sql)
-    id = data[0][0]
-    stderr = data[0][7]
-    returnCode = data[0][5]
-    mlirContent = data[0][2]
-    an = Fuzz(conf)
-    #an = Analysis(conf)
-    Fuzz111.stackStatistic(an,id,returnCode,stderr,mlirContent)
 
