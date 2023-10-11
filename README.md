@@ -38,13 +38,26 @@ $ ninja
 - generate tosa graph
 ```
 cd fuzz_tool
-bash run_generator.sh
+bash generator.sh
 ```
 - run fuzzing loop
 
 ```
 cd fuzz_tool
-bash run_fuzzing.sh
+bash run_fuzz.sh
 ```
+
+- vscode debug  调试代码请按如下配置
+    - 修改/compiler-testing/fuzz_tool/conf/conf.yml文件中的项目路径project_path 
+    - 修改/compiler-testing/fuzz_tool/src/main.py中line 47的配置文件路径config_path
+
+
+- debug 复现result_table中的一条记录
+    - 实现：Fuzz.debug
+    - 配置：设置你要重现的result_id
+    - Run或者Debug: fuzz_tool/run_fuzz.sh  
+    ```
+    python3 ./src/main.py --opt=fuzz  --sqlName=MLIRFuzz --debug='1'
+    ```
 
 ### 4. Detection Structure

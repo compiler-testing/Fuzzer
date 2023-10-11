@@ -1,10 +1,13 @@
 common:
-  external_mlir_build_path: '../external/llvm'   # external mlir build path
-  mlir_build_path: '../MLIRFuzzer'   # mlirfuzzer-opt build path
+  #==================need to modify with your path=============#
+  project_path : '/home/ty/compiler-testing'   # ../
+  #============================================================#
+
+  external_mlir_build_path: '/external/llvm'   # external mlir build path 
+  mlir_build_path: '/MLIRFuzzer'   # mlirfuzzer-opt build path
   mlirfuzzer_opt: '/build/bin/mlirfuzzer-opt'  # the tool used to Tosa graph generation and IR mutation
   mlir_opt: '/build/bin/mlir-opt'
-  temp_dir: '../logs/' # Used to save intermediates 
-
+  temp_dir: '/fuzz_tool/logs/' # Used to save intermediates 
 
 
 # set database info

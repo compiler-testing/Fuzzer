@@ -333,6 +333,9 @@ def execute_pass1(input_file,output_file, sid, raw_mlir, singlePass, config:Conf
     else:
         cmd = '%s %s -allow-unregistered-dialect %s -o %s' % (config.mlir_opt, input_file, singlePass, output_file)
     
+    s1 = cmd.split("seed.mlir ")[1]
+    save_pass = s1.split(" -o")[0]
+
     start_time = int(time() * 1000)
     #  shell 为true，执行shell内置命令  subprocess.PIPE 表示为子进程创建新的管道
     pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -363,7 +366,7 @@ def execute_pass1(input_file,output_file, sid, raw_mlir, singlePass, config:Conf
         "sid":sid,
         "input":raw_mlir,
         "mutate_type":mutate_type,
-        "cmd":cmd,
+        "cmd":save_pass,
         "return_code":return_code,
         "stdout":stdout,
         "stderr":stderr,
@@ -417,6 +420,9 @@ def execute_mlir(input_file, output_file, sid, raw_mlir, singlePass, config: Con
     else:
         cmd = '%s %s -allow-unregistered-dialect %s -o %s' % (config.mlir_opt, input_file, singlePass, output_file)
     
+    s1 = cmd.split("seed.mlir ")[1]
+    save_pass = s1.split(" -o")[0]
+
     start_time = int(time() * 1000)
     #  shell 为true，执行shell内置命令  subprocess.PIPE 表示为子进程创建新的管道
     pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -438,7 +444,7 @@ def execute_mlir(input_file, output_file, sid, raw_mlir, singlePass, config: Con
     end_time = int(time() * 1000)
     duration = int(round(end_time - start_time))
 
-    result["cmd"] = cmd
+    result["cmd"] = save_pass
     result["return_code"] = return_code
     result["stdout"] = stdout
     result["stderr"] = stderr

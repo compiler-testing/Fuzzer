@@ -9,7 +9,7 @@ from utils import *
 import pymysql
 import os
 from utils.logger_tool import log
-
+reported_errors = []
 
 def get_args():
     arg_parser = argparse.ArgumentParser()
@@ -19,12 +19,12 @@ def get_args():
     arg_parser.add_argument('--mode',default='multi-branch',choices=['api', 'chain', 'multi-branch'])
     arg_parser.add_argument('--Mut',default='0',choices=['0', '1', '2', '3'])  #no mix rep mut
     arg_parser.add_argument('--DT',default='dt',choices=['r', 'rr','c','dt'])
+    arg_parser.add_argument('--debug',default='0',choices=['0', '1'])
     return arg_parser.parse_args(sys.argv[1:])
 
 
 def create_new_table(conf: Config):
-    # with open('/home/ty/compiler-testing/fuzz_tool/conf/init.sql', 'r',encoding="utf-8") as f:
-    with open('./conf/init.sql', 'r',encoding="utf-8") as f:
+    with open(conf.project_path + '/fuzz_tool/conf/init.sql', 'r',encoding="utf-8") as f:
         sql = f.read().replace('seed_pool_table', conf.seed_pool_table) \
             .replace('result_table', conf.result_table) \
             .replace('report_table', conf.report_table)
@@ -43,8 +43,12 @@ def create_new_table(conf: Config):
 
 def main():
     args = get_args()  
-    # config_path = '/home/ty/compiler-testing/fuzz_tool/conf/conf.yml'
-    config_path = './conf/conf.yml'  # 配置文件路径
+    #==================need to modify with your path=============#
+    config_path = '/home/ty/compiler-testing/fuzz_tool/conf/conf.yml'  # debug
+    # config_path = './conf/conf.yml'  # 配置文件路径   # Run
+    #============================================================#
+
+
     conf = Config(config_path,args.sqlName)
     
     logger_tool.get_logger()
@@ -68,6 +72,9 @@ def main():
             nt= now.timestamp()
             print(datetime.datetime.now())
             conf.Iter +=1    
+            if args.debug != '0':
+                fuzzer.debug()
+                break
             fuzzer.process(args.Mut,args.DT)
             if now.__gt__(end):
                 break

@@ -362,6 +362,10 @@ def execute_pass(input_file,output_file, result, singlePass, config:Config,flag)
     else:
         cmd = '%s %s -allow-unregistered-dialect %s -o %s' % (config.mlir_opt, input_file, singlePass, output_file)
     
+     
+    s1 = cmd.split("seed.mlir ")[1]
+    save_pass = s1.split(" -o")[0]
+
     start_time = int(time() * 1000)
     #  shell 为true，执行shell内置命令  subprocess.PIPE 表示为子进程创建新的管道
     pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -383,7 +387,7 @@ def execute_pass(input_file,output_file, result, singlePass, config:Config,flag)
     end_time = int(time() * 1000)
     duration = int(round(end_time - start_time))
 
-    result["cmd"] = cmd
+    result["cmd"] = save_pass
     result["return_code"] = return_code
     result["stdout"] = stdout
     result["stderr"] = stderr
@@ -417,6 +421,9 @@ def execute_pass1(input_file,output_file, sid, raw_mlir, singlePass, config:Conf
     else:
         cmd = '%s %s -allow-unregistered-dialect %s -o %s' % (config.mlir_opt, input_file, singlePass, output_file)
     
+    s1 = cmd.split("seed.mlir ")[1]
+    save_pass = s1.split(" -o")[0]
+
     start_time = int(time() * 1000)
     #  shell 为true，执行shell内置命令  subprocess.PIPE 表示为子进程创建新的管道
     pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -447,7 +454,7 @@ def execute_pass1(input_file,output_file, sid, raw_mlir, singlePass, config:Conf
         "sid":sid,
         "input":raw_mlir,
         "mutate_type":mutate_type,
-        "cmd":cmd,
+        "cmd":save_pass,
         "return_code":return_code,
         "stdout":stdout,
         "stderr":stderr,
@@ -496,13 +503,16 @@ def execute_mlir(input_file, output_file, sid, raw_mlir, pass_list, config: Conf
         return RepMut(output_file,result1,OPdict)
     
     
+    # 执行mlir
     result = execute_pass(input_file, output_file, result1, pass_list[0], config,flag)
     # result = execute_pass(input_file, output_file, sid, raw_mlir, pass_list[0], config,flag)
     fuzzer = Fuzz(config)
 
 
     if(flag!="mutate"):
-        if (result["return_code"] != 0):  # 运行结果出错，存入数据库，reslut
+        if (result["return_code"] != 0): 
+
+            # 运行结果出错，存入数据库，reslut
             Fuzz.failer_handler(fuzzer, result,flag,config)
 
             if flag == "lower" and len(pass_list)!=1:
@@ -653,11 +663,26 @@ class Fuzz:
     def __init__(self, config: Config):
         self.config = config
 
+
+    def query_result(self,sid):
+        log.info("================== get trigger pass====================")
+        sql = "select * from " + self.config.result_table + " where id = '%s' ORDER BY rand() limit 1 " % sid
+        
+        sql_result = dbutils.db.queryAll(sql)[0]
+        return sql_result[1],sql_result[3],[sql_result[6]]  # 一行数据
+
     def select_seed(self,Nmax):
         log.info("================== select seed at random====================")
         sql = "select * from " + self.config.seed_pool_table + " where n < '%s' ORDER BY rand() limit 1 " % Nmax
         # sql = "select * from " + self.config.seed_pool_table + " where sid = 211815" 
         # sql = "update " + self.config.seed_pool_table + " set n = 0 where sid = '%s'" % sid
+        seed_types = dbutils.db.queryAll(sql)
+        return seed_types  # 一行数据
+    
+    def select_seed_sid(self,sid):
+        log.info("================== select seed with sid====================")
+        sql = "select * from " + self.config.seed_pool_table + " where sid = '%s' ORDER BY rand() limit 1 " % sid
+        print(sql)
         seed_types = dbutils.db.queryAll(sql)
         return seed_types  # 一行数据
 
@@ -680,17 +705,17 @@ class Fuzz:
 
     def mutate_success_handler(self, sid, mtype,dialects,operations, content, candidate_lower_pass,flag):
         if (flag=="opt"):
-            source = "O"
+            MLIR_phase = "O"
         elif (flag=="mutate"):
-            source = "M"
+            MLIR_phase = "M"
         elif (flag == "lower"):
-            source = "L"
+            MLIR_phase = "L"
         try:
             sql = "insert into " + self.config.seed_pool_table + \
                   " (preid,source,mtype,dialect,operation, content,n, candidate_lower_pass) " \
                   "values ('%s','%s','%s','%s','%s','%s','%s','%s')" \
                   % \
-                  (sid,source,mtype,dialects, operations,content, 0, candidate_lower_pass)
+                  (sid,MLIR_phase,mtype,dialects, operations,content, 0, candidate_lower_pass)
 
             dbutils.db.executeSQL(sql)
             # log.info(content)
@@ -705,7 +730,9 @@ class Fuzz:
         if content.find("LLVM ERROR:") >= 0:
             for item in content_list:
                 if item.find("LLVM ERROR:") >= 0:
-                    return "LLVM ERROR:" + item.split("LLVM ERROR:")[1]
+                    errorMessage = "LLVM ERROR:" + item.split("LLVM ERROR:")[1]
+
+
         errorFunc = ''
         errorMessage = ''
         if content.find("Assertion") >= 0:
@@ -714,7 +741,7 @@ class Fuzz:
                     num = re.findall(r':(\d+):', content_list[i])
                     errorMessage = content_list[i].split(num[0]+': ')[1]   
                     break
-            return errorMessage
+
 
         if content.find("Segmentation fault") >= 0:
             for i in range(0,len(content_list)-1):
@@ -723,9 +750,10 @@ class Fuzz:
                     errorFunc = errorFunc.split("(/home")[0]  #去掉报错的地址
                     errorFunc = errorFunc[22:]
                     break
-            return "Segmentation fault:" + errorFunc
-
-    def updateReportModel(self,source,error,report_stack_dict,stderr,return_code,content,report_model_dict):
+            errorMessage = "Segmentation fault:" + errorFunc
+        return errorMessage
+        
+    def updateReportModel(self,MLIR_phase,error,report_stack_dict,stderr,return_code,content,report_model_dict):
         #error = error.replace('\\\'','\'')
         error = error.replace('\'','')
         if error in report_stack_dict and return_code!=-9 and error.find("PLEASE submit a bug report")<=0:
@@ -733,11 +761,14 @@ class Fuzz:
 
         else:
             log.info("===== add new report record in reportObject =====")
-            model = reportObject(ids=source, stderror=stderr, returnCode=return_code, mlirContent=content)
+            model = reportObject(ids=MLIR_phase, stderror=stderr, returnCode=return_code, mlirContent=content)
             report_model_dict[error] = model
     
-
-    def stackStatistic(self,source,return_code,stderr,content,conf):
+    #TODO
+    def isNew(self,error):
+        return '0'
+    
+    def bugReport(self,MLIR_phase,return_code,stderr,content,passes,conf):
         log.info("===== starting analysis error =====")
         sql = "select * from " + self.config.report_table + " where stderr is not NULL and stderr != ''"
         data = dbutils.db.queryAll(sql)
@@ -746,10 +777,8 @@ class Fuzz:
         for item in data:
             report_stack_dict.append(item[0])
 
+        #1. bug信息提取
         firstLineInStderr = stderr.split("\n")[0] #提取错误信息的第一行
-        # process stack error
-    
-        # log.info("===== current result returnCode is: " + str(return_code) )
         error = ''
         #crash & segmentation fault
         if stderr.find("Assertion") >= 0 or stderr.find("LLVM ERROR:") >=0 or stderr.find("Segmentation fault (core dumped)")>=0:
@@ -757,8 +786,9 @@ class Fuzz:
         else:  # time out & others
             error = firstLineInStderr
 
-        Fuzz.updateReportModel(self,source,error,report_stack_dict,stderr,return_code,content,report_model_dict)
-         
+        #2. 保存bug
+        #2.1 过滤已保存的bug
+        Fuzz.updateReportModel(self,MLIR_phase,error,report_stack_dict,stderr,return_code,content,report_model_dict)
         for key,value in report_model_dict.items():
             log.info("===== new report record insert table =====")
             now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
@@ -768,39 +798,38 @@ class Fuzz:
             mlirContent = value.mlirContent.replace('\'', '\\\'')
             # stderr = stderr.replace('\'','')
             
+            #TODO 识别该bug是否为未曾报告的bug  new=1表示新的bug
+            new = Fuzz.isNew(self,error)
+
+            #2.2 保存bug到report_table
             try:
                 sql = "insert into " + self.config.report_table  + \
-                " (stack,sids,datetime,stderr,returnCode,mlirContent) " \
-                " values('%s','%s','%s','%s','%s','%s')" \
+                " (new,stack,phase,datetime,stderr,returnCode,mlirContent,passes) " \
+                " values('%s','%s','%s','%s','%s','%s','%s','%s')" \
                 % \
-                (key, source, now, stderr, returnCode, mlirContent)
+                (new,key, MLIR_phase, now, stderr, returnCode, mlirContent,passes)
                 # log.info("===== sql: " + str(sql) )
                 dbutils.db.executeSQL(sql)
                 log.info("======report this error successfully")
             except Exception as e:
                 log.error('sql error', e)
 
-
-
     def failer_handler(self,result,flag,conf):
         result_list = list(result.values());
         sid, content = result_list[0:2]
         if (flag=="opt"):
-            source = "O"
+            MLIR_phase = "O"
         elif (flag=="mutate"):
-            source = "M"
+            MLIR_phase = "M"
         elif (flag == "lower"):
-            source = "L"
+            MLIR_phase = "L"
 
-        cmd, return_code, stdout,stderr, duration = result_list[3:]
-
-        # 获得 result_id,return_code,stderr,mlirContent
-        # 实时分析result，存入report表中
+        passes, return_code, stdout,stderr, duration = result_list[3:]
 
         returnCode_list = [-9,134,139]
 
         if return_code in returnCode_list:
-            Fuzz.stackStatistic(self,source,return_code,stderr,content,conf)
+            Fuzz.bugReport(self,MLIR_phase,return_code,stderr,content,passes,conf)
 
         self.update_nindex(sid,False)
 
@@ -808,21 +837,21 @@ class Fuzz:
         result_list = list(result.values());
         sid, content = result_list[0:2]
         if (flag=="opt"):
-            source = "O"
+            MLIR_phase = "O"
         elif (flag=="mutate"):
-            source = "M"
+            MLIR_phase = "M"
         elif (flag == "lower"):
-            source = "L"
+            MLIR_phase = "L"
 
         cmd, return_code, stdout,stderr, duration = result_list[3:]
 
         now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         try:
             sql = "insert into  " + conf.result_table + \
-                  " (sid, content,phase,dialect,operation,cmd,returnCode,stdout,stderr,duration,datetime) " \
+                  " (sid, content,phase,dialect,operation,passes,returnCode,stdout,stderr,duration,datetime) " \
                   "values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" \
                   % \
-                  (sid, content, source,dialects,operation, cmd, return_code, stdout, stderr, duration, now)
+                  (sid, content, MLIR_phase,dialects,operation, cmd, return_code, stdout, stderr, duration, now)
             # log.info(sql)
             dbutils.db.executeSQL(sql)
             log.info("======save result")
@@ -836,21 +865,21 @@ class Fuzz:
         result_list = list(result.values());
         sid, content = result_list[0:2]
         if (flag=="opt"):
-            source = "O"
+            MLIR_phase = "O"
         elif (flag=="mutate"):
-            source = "M"
+            MLIR_phase = "M"
         elif (flag == "lower"):
-            source = "L"
+            MLIR_phase = "L"
 
         cmd, return_code, stdout,stderr, duration = result_list[3:]
 
         now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         try:
             sql = "insert into  " + conf.result_table + \
-                  " (sid, content,phase,dialect,operation,cmd,returnCode,stdout,stderr,duration,datetime) " \
+                  " (sid, content,phase,dialect,operation,passes,returnCode,stdout,stderr,duration,datetime) " \
                   "values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" \
                   % \
-                  (sid, content, source,dialects,operation, passes, return_code, stdout, stderr, duration, now)
+                  (sid, content, MLIR_phase,dialects,operation, passes, return_code, stdout, stderr, duration, now)
             # log.info(sql)
             dbutils.db.executeSQL(sql)
             log.info("======save result")
@@ -969,101 +998,52 @@ class Fuzz:
                 else:
                     log.error("current seed need to analysis，without dialects and lowerPass")
 
-    def affineGen(self):
-        # sql = "select content FROM seed_pool_MLIRGen where dialect like 'tosa'" 
-        sql = "select content FROM tosa_testcase where dialect like '%tosa%'" 
+
+    def debug(self):
+        result_id = "204889"
+
+        sid,phase,trigger_pass= self.query_result(result_id)
         
-        # sql = "select content FROM seed_pool_Fuzzer0628_copy1" 
-        # -convert-linalg-to-parallel-loops
-        dataList = dbutils.db.queryAll(sql)
         conf = self.config
-        i = 0
-        for data in dataList:
-            seed_file = conf.temp_dir + "seed" + ".mlir"
-            if not os.path.exists(seed_file):
-                os.system(r"touch {}".format(seed_file))
-            
+        log.info("Iter :"+ str(conf.Iter))
+        seed_file = conf.temp_dir + "seed" + ".mlir"
+
+        if not os.path.exists(seed_file):
+            os.system(r"touch {}".format(seed_file))
+        mut_file = conf.temp_dir + "mut" + ".mlir"
+        output_file = conf.temp_dir + "opt" + ".mlir"
+        lower_file = conf.temp_dir + "lower" + ".mlir"
+        
+        seeds = self.select_seed_sid(sid)
+        selected_seed = seeds[0]
+        dialects,operation,raw_mlir,n,lowerPass = selected_seed[-5:]
+        dialect_list = dialects.split(',')
+        OPdict = {key: [] for key in dialect_list}
+        if operation !=' ':
+            word_list = operation.split(',')
+            for item in word_list:
+                d1, d2 = item.split('.',1)
+                if d1 in OPdict:
+                    if d2 not in OPdict[d1]:
+                        OPdict[d1].append(d2)
+                
             # 向input_file写入初始种子
             f = open(seed_file, 'w', encoding="utf-8")  # w 的含义为可进行读写
-            f.write(data[0])  # file.write()为写入指令
+            f.write(raw_mlir)  # file.write()为写入指令
             f.close()
+            log.info(sid)
 
-            i = i+1
-            log.info("======generate seed : " + str(i))
-            target_file = conf.temp_dir + str(i)+ ".mlir"
-
-            singlePass = "-pass-pipeline=\"builtin.module(func.func(tosa-to-linalg-named,tosa-to-linalg))\"| mlir-opt -tosa-to-arith -tosa-to-tensor -tosa-to-scf -linalg-bufferize -convert-linalg-to-affine-loops"
-            # if i>250:
-            #     singlePass = "-pass-pipeline=\"builtin.module(func.func(tosa-to-linalg-named,tosa-to-linalg))\"| mlir-opt -linalg-bufferize -convert-linalg-to-affine-loops -affine-parallelize"
+     
+            log.info("================== Enable optimization ====================")
             
-            # singlePass = "-linalg-bufferize -convert-linalg-to-affine-loops"
-            cmd = '%s %s -allow-unregistered-dialect %s -o %s' % (conf.mlir_opt, seed_file, singlePass, target_file)
-        
-            #  shell 为true，执行shell内置命令  subprocess.PIPE 表示为子进程创建新的管道
-            pro = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8")
-            try:
-                stdout, stderr = pro.communicate(timeout=5)
-                returnCode = pro.returncode
-                log.info(cmd)
-                if not os.path.exists(target_file):
-                    # 报错不会生成, 打印错误日志
-                    log.error(stderr)
-                    continue
-                from generator.tosaGen import seedAnalysis
-                dialects,candidate_lower_pass,operations = seedAnalysis(conf,target_file)
-                log.info(candidate_lower_pass)
-                log.info(operations)
-                with open(target_file, 'r') as f:
-                    content = f.read()
-                # log.info(content)
-                try:
-                    sql = "insert into "+ conf.seed_pool_table + \
-                        " (preid,source,mtype,dialect,operation,content,n, candidate_lower_pass) " \
-                        "values ('%s','%s','%s','%s','%s','%s','%s','%s')" \
-                        % \
-                        (0,'L1','',dialects, operations,content, 0, candidate_lower_pass)
-                    dbutils.db.executeSQL(sql)
-                    # count = count+ 1object
-                except Exception as e:
-                    log.error('sql error', e)
-                os.remove(target_file)
-             
-            except subprocess.TimeoutExpired:
-                pro.kill()
-                stdout = ""
-                stderr = "timeout, kill this process"
-                returnCode = -9
+            if phase=='O':
+                flag = "opt"
+            else:
+                flag = "lower"
 
-            if i==800:
-                break
-
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    # str = "/../llvm15/mlir/mytest/fuzz_tool/case/template/seed.mlir:4:10: error: failed to legalize operation 'tosa.max_pool2d'"
-    # m = re.compile(r"to legalize operation '(.+)'")
-    # result = m.findall(str)
-    # print(result[0])
-    config_path = '/..xmr/mlir/llvm-16/mlir/mytest/fuzz_tool/conf/conf.yml'  # 配置文件路径
-    conf = Config(config_path)
-    logger_tool.get_logger()
-    dbutils.db = dbutils.myDB(conf)
-    #sql = "select * from " + self.config.report_table + " where stderr is not NULL and stderr != ''"
-    #sql = "select * from result_2023031118_o_xmr where stderr is not NULL and stderr != ''"
-    sql = "select * from result_2023031420_o_xmr where sid=205208 "
-    data = dbutils.db.queryAll(sql)
-    id = data[0][0]
-    stderr = data[0][7]
-    returnCode = data[0][5]
-    mlirContent = data[0][2]
-    an = Fuzz(conf)
-    #an = Analysis(conf)
-    Fuzz.stackStatistic(an,id,returnCode,stderr,mlirContent)
+            result = execute_mlir(seed_file, output_file, sid, raw_mlir, trigger_pass, conf,flag,[])
+            # Fuzz.FuzzingSave(result,flag,conf,dialects,operation)
+            Fuzz.FuzzingSave111(result,flag,conf,dialects,operation,trigger_pass[0])
+            if (result["return_code"] == 0):
+                analysis_and_save_seed(seed_file,output_file,result, conf,flag)
 

@@ -14,12 +14,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `report_table`;
 CREATE TABLE `report_table`  (
+  `new` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `stack` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sids` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `phase` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `datetime` datetime NULL DEFAULT NULL,
   `stderr` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `returnCode` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `mlirContent` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL
+  `mlirContent` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `passes` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 
@@ -32,7 +34,7 @@ CREATE TABLE `result_table`  (
   `phase` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `dialect` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `operation` text CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `cmd` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `passes` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `returnCode` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `stdout` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
   `stderr` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
