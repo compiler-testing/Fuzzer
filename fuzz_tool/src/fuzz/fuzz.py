@@ -757,7 +757,7 @@ class Fuzz:
         #error = error.replace('\\\'','\'')
         error = error.replace('\'','')
         if error in report_stack_dict and return_code!=-9 and error.find("PLEASE submit a bug report")<=0:
-            log.info("===== update sids in report table =====")
+            log.info("=====This bug has been saved!=====")
 
         else:
             log.info("===== add new report record in reportObject =====")
@@ -775,7 +775,7 @@ class Fuzz:
         report_model_dict = {}   
         report_stack_dict = []  #存放当前repor表中的所有的stack信息
         for item in data:
-            report_stack_dict.append(item[0])
+            report_stack_dict.append(item[1])
 
         #1. bug信息提取
         firstLineInStderr = stderr.split("\n")[0] #提取错误信息的第一行
@@ -799,7 +799,9 @@ class Fuzz:
             # stderr = stderr.replace('\'','')
             
             #TODO 识别该bug是否为未曾报告的bug  new=1表示新的bug
-            new = Fuzz.isNew(self,error)
+            global bugMsg
+            from main import bugMsg
+            new = Fuzz.isNew(self,error,bugMsg)
 
             #2.2 保存bug到report_table
             try:
@@ -1000,7 +1002,7 @@ class Fuzz:
 
 
     def debug(self):
-        result_id = "204889"
+        result_id = "203819"
 
         sid,phase,trigger_pass= self.query_result(result_id)
         
