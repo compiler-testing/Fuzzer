@@ -799,9 +799,7 @@ class Fuzz:
             # stderr = stderr.replace('\'','')
             
             #TODO 识别该bug是否为未曾报告的bug  new=1表示新的bug
-            global bugMsg
-            from main import bugMsg
-            new = Fuzz.isNew(self,error,bugMsg)
+            new = Fuzz.isNew(self,error)
 
             #2.2 保存bug到report_table
             try:
