@@ -47,7 +47,7 @@ def main():
     config_path = '/home/ty/compiler-testing/fuzz_tool/conf/conf.yml'  # debug
     # config_path = './conf/conf.yml'  # 配置文件路径   # Run
     #============================================================#
-
+    
 
     conf = Config(config_path,args.sqlName)
     
